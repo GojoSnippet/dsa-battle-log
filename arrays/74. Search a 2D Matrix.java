@@ -1,31 +1,29 @@
 class Solution {
-
-    public int binarySearchRow(int[][] matrix, int startRow, int lastRow,int target){
-        if(startRow > lastRow)return -1;
-        if(startRow ==lastRow)return startRow;
-        int mid = (startRow+lastRow)/2;
-        if(target >= matrix[mid][0] && target < matrix[mid+1][0])return mid;
+    public int binarySearchElem(int[] nums,int start,int last,int target){
+        if(start > last)return -1;
+        int mid = start +(last- start)/2;
+        if(nums[mid] == target)return mid;
         else{
-            if(target > matrix[mid][0])return binarySearchRow(matrix,mid+1,lastRow,target);
-            else return binarySearchRow(matrix,0,mid-1,target);
+            if(nums[mid] > target)return binarySearchElem(nums,start,mid-1,target);
+            else return binarySearchElem(nums,mid+1,last,target);
         }
     }
-
-    public boolean binarySearchColumn(int[] arr,int startIndex,int lastIndex,int target){
-        if(startIndex > lastIndex)return false;
-        int mid = lastIndex - (lastIndex - startIndex)/2;
-        if(arr[mid] == target)return true;
-        else{
-            if(target < arr[mid])return binarySearchColumn(arr,startIndex,mid-1,target);
-            else return binarySearchColumn(arr,mid+1,lastIndex,target);
+    public int binarySearchRow(int[][] rows,int start, int last, int target,int len){
+        if(start > last)return -1;
+        int mid = last - (last - start)/2;
+        if(target >=rows[mid][0] && target <= rows[mid][len-1])return mid;
+        else {
+            if(target < rows[mid][0])return binarySearchRow(rows,start,mid-1,target,len);
+            else return binarySearchRow(rows,mid+1,last,target,len);
         }
-
     }
     public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length-1;
-        int n = matrix[0].length-1;
-        int rowNum = binarySearchRow(matrix,0,m,target);
-        if(rowNum == -1)return false;
-        return binarySearchColumn(matrix[rowNum],0,n,target);
+        int x = binarySearchRow(matrix,0,matrix.length-1,target,matrix[0].length);
+        if(x == -1)return false;
+        else {
+            int y = binarySearchElem(matrix[x],0,matrix[0].length-1,target);
+            if(y == -1)return false;
+            else return true;
+        }
     }
 }
