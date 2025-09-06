@@ -1,33 +1,20 @@
 class Solution {
-    public void helper(int[] nums,int curr_val,int p1,int p2,int count){
-         while(p1 != count){
-            if(nums[p1] == curr_val){
-                p1++;
-                continue;
-            }
+    public int helper_func(int[] nums,int pointer1,int pointer2,int first_val){
+            while(pointer1 < pointer2){
+            while(pointer1< nums.length && nums[pointer1] == first_val)pointer1++;
+            while(pointer2 >= 0 && nums[pointer2] != first_val)pointer2--;
+            if(pointer1 > pointer2)break;
             else{
-                if(nums[p2] == curr_val){
-                    nums[p2] = nums[p1];
-                    nums[p1] = curr_val;
-                    p2--;
-                    p1++;
-                }
-                else{
-                    p2--;
-                }
-            }
-        }   
-    }
-
-    public void sortColors(int[] nums) {
-        int x = 0;int y=nums.length - 1;
-        int count_zeroes = 0,count_ones = 0;
-        for(int i: nums){
-            if(i == 0)count_zeroes++;
-            else if(i==1)count_ones++;
+            int temp= nums[pointer1];
+            nums[pointer1] = nums[pointer2];
+            nums[pointer2] = temp;}
         }
-        int p1=0,p2=nums.length-1;
-        helper(nums,0,p1,p2,count_zeroes);
-        helper(nums,1,count_zeroes,p2,count_ones+count_zeroes);
+        return pointer2;
+    }
+    public void sortColors(int[] nums) {
+        int pointer1 = 0;int pointer2 = nums.length-1;
+        pointer2 = helper_func(nums,pointer1,pointer2,0);
+        helper_func(nums,pointer2+1,nums.length-1,1);
+        return;
     }
 }
