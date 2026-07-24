@@ -1,13 +1,33 @@
+// Valid Anagram (LeetCode #242) — Arrays & Hashing (frequency counting)
+// Idea: two words are anagrams ⇔ identical letter counts. Count letters, compare.
+// Time O(n), Space O(1)  (fixed 26-length arrays — independent of input size).
+//
+// [2026-07-24] int[26] count arrays — the FASTEST approach for lowercase a-z (beats sorting
+// O(n log n), beats a HashMap by avoiding autoboxing). Real growth: your older version
+// (arrays/valid_anagram) used a HashMap; this int[26] upgrade is the expected optimal. 👏
+//
+// SAME TOOL as Group Anagrams (#49): there you keyed groups by a Map<Character,Integer>; you could
+// instead build an int[26] and turn it into a String key — cheaper + more conventional. You already
+// own this tool (right here) — bring it there.
+//
+// Refinement — one array instead of two (++ for s, -- for t, then every bucket must be 0):
+//   int[] cnt = new int[26];
+//   for (int i = 0; i < s.length(); i++) { cnt[s.charAt(i)-'a']++; cnt[t.charAt(i)-'a']--; }
+//   for (int c : cnt) if (c != 0) return false;
+//   return true;
+// Interview follow-up: "what if Unicode / not just a-z?" → int[26] breaks; fall back to a
+// HashMap<Character,Integer> (your older approach — keep it in your back pocket).
+
 class Solution {
     public boolean isAnagram(String s, String t) {
         int len_s = s.length();
         int len_t = t.length();
 
         if(len_s != len_t)return false;
-        int[] charArray_1 = new int[26]; // 2 0 0 0 0 0 0 0 0 0 1
-        int[] charArray_2 = new int[26]; // 0 0 0 0 0 0 0 0 0 0 
+        int[] charArray_1 = new int[26];
+        int[] charArray_2 = new int[26];
         for(int i=0 ; i< len_s ;++i){
-            charArray_1[s.charAt(i) - 'a']++; // 
+            charArray_1[s.charAt(i) - 'a']++;
             charArray_2[t.charAt(i)- 'a']++;
         }
         for(int i=0 ; i< 26 ;++i){
@@ -16,4 +36,3 @@ class Solution {
         return true;
     }
 }
-
